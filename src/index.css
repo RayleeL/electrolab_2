@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #12121a;
+  --color-bg-tertiary: #1a1a28;
+  --color-bg-card: rgba(255, 255, 255, 0.03);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.06);
+  --color-bg-glass: rgba(255, 255, 255, 0.05);
+
+  --color-text-primary: #f0f0f5;
+  --color-text-secondary: #a0a0b8;
+  --color-text-tertiary: #6a6a80;
+
+  --color-accent-1: #7c5cfc;
+  --color-accent-2: #5c8cfc;
+  --color-accent-3: #5cfcb6;
+  
+  --color-border-color: rgba(255, 255, 255, 0.06);
+  --color-border-active: rgba(124, 92, 252, 0.4);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .equus-gradient-text {
+    background: linear-gradient(135deg, #7c5cfc 0%, #5c8cfc 50%, #5cfcb6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .btn-equus {
+    background: linear-gradient(135deg, #7c5cfc 0%, #5c8cfc 50%, #5cfcb6 100%);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(124, 92, 252, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .btn-equus:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124, 92, 252, 0.4);
+  }
+  
+  .btn-outline-equus {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .btn-outline-equus:hover {
+    border-color: var(--color-border-active);
+    background: var(--color-bg-glass);
+    transform: translateY(-2px);
+  }
+  
+  .glass-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-color);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .glass-card:hover {
+    border-color: var(--color-border-active);
+    background: var(--color-bg-card-hover);
+    box-shadow: 0 8px 40px rgba(124, 92, 252, 0.15);
+    transform: translateY(-4px);
+  }
+
+  /* Adv-card pseudo border gradient from styles.css */
+  .adv-card-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, #7c5cfc 0%, #5c8cfc 50%, #5cfcb6 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .adv-card-effect:hover::before {
+    transform: scaleX(1);
+  }
+  
+  .input-equus {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-color);
+    color: var(--color-text-primary);
+    transition: all 0.3s ease;
+  }
+  
+  .input-equus:focus {
+    border-color: var(--color-accent-1);
+    box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.1);
+    outline: none;
+  }
+  
+  .nav-blur {
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -30px) scale(1.05); }
+  50% { transform: translate(-20px, 20px) scale(0.95); }
+  75% { transform: translate(15px, 15px) scale(1.02); }
+}
