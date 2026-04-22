@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Quiz } from './components/Quiz';
 import faviconImg from '../assets/electrolab_favicon.png';
 import img1 from '../assets/1.png';
@@ -9,10 +9,53 @@ import { useTranslation } from 'react-i18next';
 
 export default function App() {
   const { t, i18n } = useTranslation();
+  const aboutRef = useRef<HTMLElement | null>(null);
+  const [aboutInView, setAboutInView] = useState(false);
+  const [statsTriggered, setStatsTriggered] = useState(false);
+  const [animatedNumbers, setAnimatedNumbers] = useState([0, 0, 0, 0]);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
+
+  useEffect(() => {
+    const section = aboutRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAboutInView(true);
+          setStatsTriggered(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!statsTriggered) return;
+
+    const targets = [25, 2000, 10, 500];
+    const duration = 1200;
+    let start: number | null = null;
+    let frameId = 0;
+
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      setAnimatedNumbers(targets.map((target) => Math.round(target * progress)));
+      if (progress < 1) {
+        frameId = window.requestAnimationFrame(animate);
+      }
+    };
+
+    frameId = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(frameId);
+  }, [statsTriggered]);
 
   return (
     <>
@@ -49,53 +92,51 @@ export default function App() {
         </div>
         
         <div className="relative z-10 text-center max-w-[800px] px-6 mx-auto">
-          <div className="inline-block px-6 py-1.5 bg-bg-glass border border-bg-glass-border rounded-full text-sm font-medium text-text-secondary mb-8 backdrop-blur-md">
+          <div className="inline-block px-6 py-1.5 bg-bg-glass border border-bg-glass-border rounded-full text-sm font-medium text-text-secondary mb-8 backdrop-blur-md hero-badge">
             {t('hero.badge')}
           </div>
-          <h1 className="text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.1] tracking-tight mb-8">
+          <h1 className="text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.1] tracking-tight mb-8 hero-heading">
             <span className="text-white">{t('hero.title_main')}<br/></span>{' '}
             <span className="equus-gradient-text">{t('hero.title_accent')}</span>
           </h1>
-          <p className="text-[clamp(1rem,2vw,1.2rem)] text-text-secondary max-w-[600px] mx-auto mb-12 leading-relaxed">
+          <p className="text-[clamp(1rem,2vw,1.2rem)] text-text-secondary max-w-[600px] mx-auto mb-12 leading-relaxed hero-desc">
             {t('hero.desc')}
           </p>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 hero-cta">
             <a href="#quiz" className="btn-equus px-8 py-3.5 rounded-lg font-semibold flex items-center justify-center">{t('hero.cta')}</a>
           </div>
         </div>
         
         <div className="absolute bottom-[30px] left-1/2 -translate-x-1/2">
-          <div className="w-[2px] h-[40px] equus-gradient-bg rounded-full relative overflow-hidden">
+          <div className="w-[2px] h-[40px] equus-gradient-bg rounded-full relative overflow-hidden hero-scroll-line">
             <div className="absolute inset-0 bg-bg-primary h-full w-full animate-[scrollLine_2s_ease-in-out_infinite]"></div>
           </div>
         </div>
       </section>
 
       <section id="about" className="py-24 border-y border-border-color bg-bg-secondary">
-        <div className="max-w-[1200px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
+        <div className="max-w-[1200px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center" ref={aboutRef}>
+          <div className={`about-panel ${aboutInView ? 'about-reveal' : ''}`}>
             <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-tight mb-4">{t('about.title')}</h2>
             <p className="text-text-secondary text-base leading-[1.6]">
               {t('about.desc')}
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-12 text-center lg:text-left">
-            <div>
-              <div className="equus-gradient-text text-[clamp(2.5rem,5vw,3.5rem)] font-extrabold leading-none mb-2">25<span className="text-[clamp(1.5rem,3vw,2rem)]">+</span></div>
-              <div className="text-text-secondary text-sm font-medium">{t('about.stats.years')}</div>
-            </div>
-            <div>
-              <div className="equus-gradient-text text-[clamp(2.5rem,5vw,3.5rem)] font-extrabold leading-none mb-2">2000<span className="text-[clamp(1.5rem,3vw,2rem)]">+</span></div>
-              <div className="text-text-secondary text-sm font-medium">{t('about.stats.consultations')}</div>
-            </div>
-            <div>
-              <div className="equus-gradient-text text-[clamp(2.5rem,5vw,3.5rem)] font-extrabold leading-none mb-2">10<span className="text-[clamp(1.5rem,3vw,2rem)]">+</span></div>
-              <div className="text-text-secondary text-sm font-medium">{t('about.stats.industries')}</div>
-            </div>
-            <div>
-              <div className="equus-gradient-text text-[clamp(2.5rem,5vw,3.5rem)] font-extrabold leading-none mb-2">500<span className="text-[clamp(1.5rem,3vw,2rem)]">+</span></div>
-              <div className="text-text-secondary text-sm font-medium">{t('about.stats.plans')}</div>
-            </div>
+          <div className={`grid grid-cols-2 gap-x-8 gap-y-12 text-center lg:text-left stats-grid ${aboutInView ? 'about-reveal' : ''}`}>
+            {[
+              { value: animatedNumbers[0], label: t('about.stats.years') },
+              { value: animatedNumbers[1], label: t('about.stats.consultations') },
+              { value: animatedNumbers[2], label: t('about.stats.industries') },
+              { value: animatedNumbers[3], label: t('about.stats.plans') },
+            ].map((stat, index) => (
+              <div key={index}>
+                <div className="equus-gradient-text text-[clamp(2.5rem,5vw,3.5rem)] font-extrabold leading-none mb-2 animated-number">
+                  {stat.value}
+                  <span className="text-[clamp(1.5rem,3vw,2rem)]">+</span>
+                </div>
+                <div className="text-text-secondary text-sm font-medium">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -102,6 +102,68 @@
   .adv-card-effect:hover::before {
     transform: scaleX(1);
   }
+
+  .hero-badge,
+  .hero-heading,
+  .hero-desc,
+  .hero-cta {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeInUp 0.85s ease-out forwards;
+  }
+
+  .hero-heading { animation-delay: 0.25s; }
+  .hero-desc { animation-delay: 0.45s; }
+  .hero-cta { animation-delay: 0.65s; }
+  .hero-badge { animation-delay: 0.1s; }
+
+  .hero-scroll-line {
+    animation: floatBorder 2.4s ease-in-out infinite;
+  }
+
+  .about-panel,
+  .stats-grid {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .about-reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .animated-number {
+    display: inline-block;
+    animation: popIn 0.75s ease-out both;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes popIn {
+    from {
+      opacity: 0.2;
+      transform: scale(0.88);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes floatBorder {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
   
   .input-equus {
     background: var(--color-bg-card);
