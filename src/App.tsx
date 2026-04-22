@@ -335,7 +335,11 @@ export default function App() {
             <div className="grid grid-cols-2 md:grid-cols-4 border border-border-color rounded-2xl overflow-hidden bg-bg-card">
                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                   <div key={i} className="h-32 border-b md:border-r border-border-color flex flex-col justify-center items-center opacity-50 hover:opacity-100 transition-opacity cursor-pointer">
-                     <span className="text-3xl mb-1">🏢</span>
+                     {i === 1 ? (
+                        <img src="/partner_logo.png" alt="Partner Logo" className="w-16 h-16 object-contain" />
+                     ) : (
+                        <span className="text-3xl mb-1">🏢</span>
+                     )}
                   </div>
                ))}
             </div>
