@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export function Quiz() {
@@ -8,13 +8,45 @@ export function Quiz() {
   
   const QUIZ_STEPS = (t('quiz.questions', { returnObjects: true }) as any[]);
 
+  // Replace with your Google Apps Script web app URL
+  const GOOGLE_SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [formData, setFormData] = useState({ name: '', contact: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleOptionSelect = (option: string) => {
     setAnswers(prev => ({ ...prev, [step]: option }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await fetch(GOOGLE_SHEETS_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          contact: formData.contact,
+          answers,
+        }),
+        mode: 'no-cors', // Google Apps Script doesn't set CORS headers
+      });
+
+      setIsSubmitted(true);
+    } catch (err) {
+      setError(t('quiz.form.error') || 'Failed to submit form. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const nextStep = () => {
@@ -46,16 +78,30 @@ export function Quiz() {
             <h3 className="text-2xl font-bold text-text-primary">{t('quiz.last_step')}</h3>
             <p className="text-text-secondary">{t('quiz.last_step_desc')}</p>
           </div>
-          <form onSubmit={(e) => { e.preventDefault(); setIsSubmitted(true); }} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full input-equus rounded-md px-4 py-3 placeholder:text-text-tertiary" placeholder={t('quiz.form.name_placeholder')} />
             </div>
             <div>
               <input type="text" required value={formData.contact} onChange={e => setFormData({ ...formData, contact: e.target.value })} className="w-full input-equus rounded-md px-4 py-3 placeholder:text-text-tertiary" placeholder={t('quiz.form.contact_placeholder')} />
             </div>
+            {error && (
+              <div className="text-red-400 text-sm bg-red-900/20 border border-red-800 rounded-md p-3">
+                {error}
+              </div>
+            )}
             <div className="flex justify-between items-center pt-6 border-t border-border-color mt-8">
               <button type="button" onClick={prevStep} className="px-6 py-3 rounded-md text-text-secondary hover:text-white hover:bg-bg-card-hover transition-colors font-medium border border-border-color">← {t('quiz.back')}</button>
-              <button type="submit" className="btn-equus px-8 py-3 rounded-md font-medium">{t('quiz.form.submit')}</button>
+              <button type="submit" disabled={isLoading} className="btn-equus px-8 py-3 rounded-md font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    {t('quiz.form.submitting') || 'Submitting...'}
+                  </>
+                ) : (
+                  t('quiz.form.submit')
+                )}
+              </button>
             </div>
           </form>
         </motion.div>

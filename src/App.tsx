@@ -7,6 +7,8 @@ import img3 from '../assets/3.png';
 import img4 from '../assets/4.png';
 import { useTranslation } from 'react-i18next';
 
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz1PFqsxeU2wAkWMDddQCGE_gYGITwVdyZ_Jyuo2gL_jxnWXaYVxeD8KXwog0sGdW7otw/exec';
+
 export default function App() {
   const { t, i18n } = useTranslation();
   const aboutRef = useRef<HTMLElement | null>(null);
@@ -14,8 +16,49 @@ export default function App() {
   const [statsTriggered, setStatsTriggered] = useState(false);
   const [animatedNumbers, setAnimatedNumbers] = useState([0, 0, 0, 0]);
 
+  // Contact form state
+  const [contactForm, setContactForm] = useState({
+    email: '',
+    name: '',
+    phone: '',
+    comment: ''
+  });
+  const [contactLoading, setContactLoading] = useState(false);
+  const [contactError, setContactError] = useState<string | null>(null);
+  const [contactSuccess, setContactSuccess] = useState(false);
+
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactLoading(true);
+    setContactError(null);
+
+    try {
+      await fetch(GOOGLE_SHEETS_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: contactForm.name,
+          email: contactForm.email,
+          phone: contactForm.phone,
+          comment: contactForm.comment,
+          source: 'contact_form'
+        }),
+        mode: 'no-cors', // Google Apps Script doesn't set CORS headers
+      });
+
+      setContactSuccess(true);
+      setContactForm({ email: '', name: '', phone: '', comment: '' });
+    } catch (err) {
+      setContactError(t('contact.form.error') || 'Failed to submit form. Please try again.');
+    } finally {
+      setContactLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -322,24 +365,43 @@ export default function App() {
                   </div>
                </div>
                
-               <form className="flex flex-col gap-6" onSubmit={e => e.preventDefault()}>
+               <form className="flex flex-col gap-6" onSubmit={handleContactSubmit}>
                   <div className="flex flex-col gap-2">
                      <label className="text-[0.85rem] font-semibold text-text-secondary">{t('contact.form.email')}</label>
-                     <input type="email" placeholder={t('contact.form.input_email')} required className="input-equus px-5 py-3.5 rounded-xl text-[0.95rem] w-full" />
+                     <input type="email" placeholder={t('contact.form.input_email')} required value={contactForm.email} onChange={e => setContactForm({...contactForm, email: e.target.value})} className="input-equus px-5 py-3.5 rounded-xl text-[0.95rem] w-full" />
                   </div>
                   <div className="flex flex-col gap-2">
                      <label className="text-[0.85rem] font-semibold text-text-secondary">{t('contact.form.name')}</label>
-                     <input type="text" placeholder={t('contact.form.input_name')} required className="input-equus px-5 py-3.5 rounded-xl text-[0.95rem] w-full" />
+                     <input type="text" placeholder={t('contact.form.input_name')} required value={contactForm.name} onChange={e => setContactForm({...contactForm, name: e.target.value})} className="input-equus px-5 py-3.5 rounded-xl text-[0.95rem] w-full" />
                   </div>
                   <div className="flex flex-col gap-2">
                      <label className="text-[0.85rem] font-semibold text-text-secondary">{t('contact.form.phone')}</label>
-                     <input type="text" placeholder={t('contact.form.input_phone')} className="input-equus px-5 py-3.5 rounded-xl text-[0.95rem] w-full" />
+                     <input type="text" placeholder={t('contact.form.input_phone')} value={contactForm.phone} onChange={e => setContactForm({...contactForm, phone: e.target.value})} className="input-equus px-5 py-3.5 rounded-xl text-[0.95rem] w-full" />
                   </div>
                   <div className="flex flex-col gap-2">
                      <label className="text-[0.85rem] font-semibold text-text-secondary">{t('contact.form.comment')}</label>
-                     <textarea rows={4} placeholder={t('contact.form.input_comment')} className="input-equus px-5 py-3.5 rounded-xl text-[0.95rem] w-full resize-y min-h-[120px]"></textarea>
+                     <textarea rows={4} placeholder={t('contact.form.input_comment')} value={contactForm.comment} onChange={e => setContactForm({...contactForm, comment: e.target.value})} className="input-equus px-5 py-3.5 rounded-xl text-[0.95rem] w-full resize-y min-h-[120px]"></textarea>
                   </div>
-                  <button type="submit" className="btn-equus w-full py-4 rounded-xl font-bold mt-2">{t('contact.form.submit')}</button>
+                  {contactError && (
+                    <div className="text-red-400 text-sm bg-red-900/20 border border-red-800 rounded-md p-3">
+                      {contactError}
+                    </div>
+                  )}
+                  {contactSuccess && (
+                    <div className="text-green-400 text-sm bg-green-900/20 border border-green-800 rounded-md p-3">
+                      {t('contact.form.success') || 'Message sent successfully!'}
+                    </div>
+                  )}
+                  <button type="submit" disabled={contactLoading} className="btn-equus w-full py-4 rounded-xl font-bold mt-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                    {contactLoading ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        {t('contact.form.submitting') || 'Sending...'}
+                      </>
+                    ) : (
+                      t('contact.form.submit')
+                    )}
+                  </button>
                </form>
             </div>
          </div>
