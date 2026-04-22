@@ -376,7 +376,13 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
+    lng: 'ru',
     fallbackLng: 'ru',
+    supportedLngs: ['ru', 'ky', 'en'],
+    detection: {
+      order: ['querystring', 'cookie', 'localStorage'],
+      caches: ['localStorage'],
+    },
     interpolation: {
       escapeValue: false
     }
