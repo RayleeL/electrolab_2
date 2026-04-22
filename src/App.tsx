@@ -26,6 +26,10 @@ export default function App() {
   const [contactLoading, setContactLoading] = useState(false);
   const [contactError, setContactError] = useState<string | null>(null);
   const [contactSuccess, setContactSuccess] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window === 'undefined') return 'dark';
+    return (window.localStorage.getItem('electrolabTheme') as 'dark' | 'light') ?? 'dark';
+  });
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -60,6 +64,11 @@ export default function App() {
       setContactLoading(false);
     }
   };
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem('electrolabTheme', theme);
+  }, [theme]);
 
   useEffect(() => {
     const section = aboutRef.current;
@@ -121,6 +130,10 @@ export default function App() {
               <button onClick={() => changeLanguage('ky')} className={`hover:text-text-primary transition-colors ${i18n.language.startsWith('ky') ? 'text-text-primary font-bold' : ''}`}>КЫ</button>
               <span>|</span>
               <button onClick={() => changeLanguage('en')} className={`hover:text-text-primary transition-colors ${i18n.language.startsWith('en') ? 'text-text-primary font-bold' : ''}`}>EN</button>
+              <span>|</span>
+              <button onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')} className="hover:text-text-primary transition-colors" aria-label="Toggle theme">
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </button>
             </li>
           </ul>
         </div>
@@ -139,7 +152,7 @@ export default function App() {
             {t('hero.badge')}
           </div>
           <h1 className="text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.1] tracking-tight mb-8 hero-heading">
-            <span className="text-white">{t('hero.title_main')}<br/></span>{' '}
+            <span className="text-text-primary">{t('hero.title_main')}<br/></span>{' '}
             <span className="equus-gradient-text">{t('hero.title_accent')}</span>
           </h1>
           <p className="text-[clamp(1rem,2vw,1.2rem)] text-text-secondary max-w-[600px] mx-auto mb-12 leading-relaxed hero-desc">
