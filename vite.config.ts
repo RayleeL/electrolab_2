@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
 
   return {
-    base: "/",
+    base: "/electrolab_2/",
 
     plugins: [react(), tailwindcss()],
 
