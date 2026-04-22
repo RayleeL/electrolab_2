@@ -109,13 +109,17 @@
   .hero-cta {
     opacity: 0;
     transform: translateY(24px);
-    animation: fadeInUp 0.85s ease-out forwards;
+    animation: fadeInUp 1.2s ease-out forwards;
   }
 
   .hero-heading { animation-delay: 0.25s; }
   .hero-desc { animation-delay: 0.45s; }
   .hero-cta { animation-delay: 0.65s; }
   .hero-badge { animation-delay: 0.1s; }
+
+  .hero-section {
+    animation: heroFadeIn 2s ease-out;
+  }
 
   .hero-scroll-line {
     animation: floatBorder 2.4s ease-in-out infinite;
@@ -135,13 +139,24 @@
 
   .animated-number {
     display: inline-block;
-    animation: popIn 0.75s ease-out both;
+    animation: popIn 1s ease-out both;
   }
 
   @keyframes fadeInUp {
     from {
       opacity: 0;
       transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes heroFadeIn {
+    from {
+      opacity: 0.8;
+      transform: translateY(10px);
     }
     to {
       opacity: 1;

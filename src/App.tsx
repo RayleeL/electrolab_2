@@ -40,7 +40,7 @@ export default function App() {
     if (!statsTriggered) return;
 
     const targets = [25, 2000, 10, 500];
-    const duration = 1200;
+    const duration = 1500;
     let start: number | null = null;
     let frameId = 0;
 
@@ -83,7 +83,7 @@ export default function App() {
         </div>
       </nav>
 
-      <section id="hero" className="relative min-h-[100vh] flex items-center justify-center pt-[120px] pb-[80px] overflow-hidden bg-bg-primary">
+      <section id="hero" className="relative min-h-[100vh] flex items-center justify-center pt-[120px] pb-[80px] overflow-hidden bg-bg-primary hero-section">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute w-[500px] h-[500px] bg-accent-1 rounded-full blur-[100px] opacity-40 -top-[20%] right-[-10%] animate-[orbFloat_20s_ease-in-out_infinite]"></div>
           <div className="absolute w-[400px] h-[400px] bg-accent-2 rounded-full blur-[100px] opacity-40 -bottom-[15%] left-[-5%] animate-[orbFloat_20s_ease-in-out_infinite_reverse_7s]"></div>
