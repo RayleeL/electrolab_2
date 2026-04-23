@@ -46,6 +46,38 @@
     background: rgba(255, 255, 255, 0.82);
   }
 
+  /* Fixes for light theme: ensure utility classes that force white don't hide text */
+  html[data-theme='light'] {
+    /* Ensure default text variables are set (already above) */
+  }
+
+  /* Override utility classes that use hard-coded white so they adapt to light theme */
+  html[data-theme='light'] .text-white {
+    color: var(--color-text-primary) !important;
+  }
+  html[data-theme='light'] .hover\:text-white:hover {
+    color: var(--color-text-primary) !important;
+  }
+  html[data-theme='light'] .text-white\:hover {
+    color: var(--color-text-primary) !important;
+  }
+
+  /* Make nav links readable on light background */
+  html[data-theme='light'] .nav-blur,
+  html[data-theme='light'] nav {
+    color: var(--color-text-secondary);
+  }
+  html[data-theme='light'] .nav-blur a,
+  html[data-theme='light'] nav a {
+    color: var(--color-text-secondary);
+  }
+
+  /* Ensure elements that force white on hover get adapted */
+  html[data-theme='light'] .hover\:text-white\:hover,
+  html[data-theme='light'] .group:hover .text-white {
+    color: var(--color-text-primary) !important;
+  }
+
   body {
     background-color: var(--color-bg-primary);
     color: var(--color-text-primary);
