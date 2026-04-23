@@ -26,10 +26,8 @@ export default function App() {
   const [contactLoading, setContactLoading] = useState(false);
   const [contactError, setContactError] = useState<string | null>(null);
   const [contactSuccess, setContactSuccess] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    if (typeof window === 'undefined') return 'dark';
-    return (window.localStorage.getItem('electrolabTheme') as 'dark' | 'light') ?? 'dark';
-  });
+  // Default to dark theme on first load
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => 'dark');
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
