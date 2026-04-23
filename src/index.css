@@ -50,17 +50,34 @@
   html[data-theme='light'] .nav-blur {
     background: #ffffff; /* white navbar */
     color: var(--color-text-primary);
+    box-shadow: 0 1px 0 rgba(15,23,42,0.04);
   }
 
+  /* Nav links and buttons: dark text, clear hover to accent color */
   html[data-theme='light'] nav,
   html[data-theme='light'] .nav-blur a,
   html[data-theme='light'] .nav-blur button {
     color: var(--color-text-primary) !important; /* dark text */
+    opacity: 1;
   }
 
-  /* Ensure hover states remain dark in light theme */
-  html[data-theme='light'] a:hover,
-  html[data-theme='light'] button:hover {
+  /* Make nav buttons visually distinct: dark background, white label */
+  html[data-theme='light'] .nav-blur button.btn-equus,
+  html[data-theme='light'] .nav-blur .btn-equus {
+    background: #0f172a; /* dark button */
+    color: #fff;
+    box-shadow: none;
+  }
+
+  /* Hover colors: use accent instead of white */
+  html[data-theme='light'] .nav-blur a:hover,
+  html[data-theme='light'] .nav-blur button:hover {
+    color: var(--color-accent-1) !important;
+  }
+
+  /* Make sure any text forced to white (utility classes) doesn't appear white on hover */
+  html[data-theme='light'] .nav-blur .text-white,
+  html[data-theme='light'] .nav-blur .hover\:text-white:hover {
     color: var(--color-text-primary) !important;
   }
 
