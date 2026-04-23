@@ -53,6 +53,36 @@
     box-shadow: 0 1px 0 rgba(15,23,42,0.04);
   }
 
+  /* Stronger overrides to ensure navbar is fully white and text/buttons dark in light theme */
+  html[data-theme='light'] nav.nav-blur {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: var(--color-text-primary) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html[data-theme='light'] nav.nav-blur a,
+  html[data-theme='light'] nav.nav-blur button,
+  html[data-theme='light'] nav.nav-blur .btn-equus {
+    color: var(--color-text-primary) !important;
+    background: transparent !important;
+    opacity: 1 !important;
+  }
+
+  /* If buttons use btn-equus in nav, make them dark with white text */
+  html[data-theme='light'] nav.nav-blur .btn-equus {
+    background: #0f172a !important;
+    color: #ffffff !important;
+    border-color: rgba(15,23,42,0.08) !important;
+  }
+
+  /* Hover: use accent color, not white */
+  html[data-theme='light'] nav.nav-blur a:hover,
+  html[data-theme='light'] nav.nav-blur button:hover {
+    color: var(--color-accent-1) !important;
+  }
+
   /* Nav links and buttons: dark text, clear hover to accent color */
   html[data-theme='light'] nav,
   html[data-theme='light'] .nav-blur a,
