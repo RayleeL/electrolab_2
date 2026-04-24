@@ -8,8 +8,8 @@ export function Quiz() {
   
   const QUIZ_STEPS = (t('quiz.questions', { returnObjects: true }) as any[]);
 
-  // Replace with your Google Apps Script web app URL
-  const GOOGLE_SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+  // Google Apps Script web app URL (contact / quiz submissions)
+  const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyYHdy6ImjF1tBdTSMbkKG5y8Tm0zFfzM_jiBmb1zr9Gf_A2vYEUBGWcxkldxMeaIJmiQ/exec';
 
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState<Record<number, string>>({});

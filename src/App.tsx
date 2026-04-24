@@ -7,7 +7,7 @@ import img3 from '../assets/3.png';
 import img4 from '../assets/4.png';
 import { useTranslation } from 'react-i18next';
 
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz1PFqsxeU2wAkWMDddQCGE_gYGITwVdyZ_Jyuo2gL_jxnWXaYVxeD8KXwog0sGdW7otw/exec';
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyYHdy6ImjF1tBdTSMbkKG5y8Tm0zFfzM_jiBmb1zr9Gf_A2vYEUBGWcxkldxMeaIJmiQ/exec';
 
 export default function App() {
   const { t, i18n } = useTranslation();
