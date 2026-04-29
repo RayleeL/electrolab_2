@@ -333,7 +333,12 @@ export default function App() {
             <div className="grid grid-cols-2 md:grid-cols-4 border border-border-color rounded-2xl overflow-hidden bg-bg-card">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 <div key={i} className="h-32 border-b md:border-r border-border-color relative overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer">
-                  <img src={`/partners/${i}logo.png`} alt={`Partner ${i}`} className="absolute inset-0 w-full h-full object-contain" />
+                  <div className="absolute inset-0 bg-black/30 dark:bg-transparent" />
+                  <img
+                    src={`/partners/${i}logo.png`}
+                    alt={`Partner ${i}`}
+                    className={`absolute inset-0 w-full h-full object-contain z-10 ${i === 8 ? 'transform scale-110' : ''}`}
+                  />
                 </div>
               ))}
             </div>
