@@ -331,15 +331,11 @@ export default function App() {
          <div className="max-w-[1200px] mx-auto px-8">
             <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-tight mb-16 text-center">{t('partners.title')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 border border-border-color rounded-2xl overflow-hidden bg-bg-card">
-               {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                  <div key={i} className="h-32 border-b md:border-r border-border-color flex flex-col justify-center items-center opacity-50 hover:opacity-100 transition-opacity cursor-pointer">
-                    {i === 1 ? (
-                      <img src="/partner_logo.jpg" alt="Partner Logo" className="w-full h-full object-contain" />
-                    ) : (
-                        <span className="text-3xl mb-1">🏢</span>
-                     )}
-                  </div>
-               ))}
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <div key={i} className="h-32 border-b md:border-r border-border-color relative overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer">
+                  <img src={`/partners/${i}logo.png`} alt={`Partner ${i}`} className="absolute inset-0 w-full h-full object-contain" />
+                </div>
+              ))}
             </div>
          </div>
       </section>
