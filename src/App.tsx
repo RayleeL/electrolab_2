@@ -331,16 +331,28 @@ export default function App() {
          <div className="max-w-[1200px] mx-auto px-8">
             <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-tight mb-16 text-center">{t('partners.title')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 border border-border-color rounded-2xl overflow-hidden bg-bg-card">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                <div key={i} className="h-32 border-b md:border-r border-border-color relative overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer">
-                  <div className="absolute inset-0 bg-black/30 dark:bg-transparent" />
-                  <img
-                    src={`/partners/${i}logo.png`}
-                    alt={`Partner ${i}`}
-                    className={`absolute inset-0 w-full h-full object-contain z-10 ${i === 8 ? 'transform scale-110' : ''}`}
-                  />
-                </div>
-              ))}
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => {
+                const scales: { [key: number]: string } = {
+                  1: 'scale-80', // Фармамир - увеличенный размер
+                  2: 'scale-70', // Лекарь
+                  3: 'scale-75', // KICB
+                  4: 'scale-55', // Биро топ
+                  5: 'scale-105', // Газпром
+                  6: 'scale-65', // Elite House
+                  7: 'scale-70', // Эрайфарм
+                  8: 'scale-60', // (8-й логотип)
+                };
+                return (
+                  <div key={i} className="h-32 border-b md:border-r border-border-color relative overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/30 dark:bg-transparent" />
+                    <img
+                      src={`/partners/${i}logo.png`}
+                      alt={`Partner ${i}`}
+                      className={`w-full h-full z-10 ${i === 2 ? 'object-cover object-bottom' : 'object-contain'} ${scales[i]}`}
+                    />
+                  </div>
+                );
+              })}
             </div>
          </div>
       </section>
